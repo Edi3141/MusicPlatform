@@ -6,3 +6,4 @@ psycopg2-binary
 django-filter
 python-decouple
 Pillow
+python-decouple
