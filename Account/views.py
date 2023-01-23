@@ -59,4 +59,3 @@ class LogoutView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response('Успешно вышел из системы!', status=200)
-
