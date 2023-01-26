@@ -44,9 +44,6 @@ class ActivationView(APIView):
             return Response({'msg': 'Срок действия ссылки истек!'}, status=400)
 
 
-
-
-
 class LoginView(TokenObtainPairView):
     permission_classes = (permissions.AllowAny,)
 
