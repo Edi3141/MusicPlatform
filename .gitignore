@@ -1,4 +1,5 @@
 # Django #
+.idea/
 .env
 .venv
 venv
