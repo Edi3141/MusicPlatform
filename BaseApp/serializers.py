@@ -38,7 +38,7 @@ class BaseSerializer(serializers.ModelSerializer):
 class GenreSerializer(BaseSerializer):
     class Meta:
         model = models.Genre
-        fields = ('name')
+        fields = ('id', 'name')
 
 
 class LicenseSerializer(BaseSerializer):

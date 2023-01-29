@@ -5,7 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, parsers, views, filters, permissions, mixins
 from . import models, serializers
 from .MixedClass import MixedSerializer, Pagination
-from .models import Genre, Track
+from .models import Track
 from .permissions import IsAuthor
 from .services import delete_old_file
 from rest_framework.filters import SearchFilter
@@ -171,7 +171,6 @@ class DownloadTrackView(views.APIView):
 
 
 class StreamingFileAuthorView(views.APIView):
-
     permission_classes = [IsAuthor]
 
     def get(self, request, pk):

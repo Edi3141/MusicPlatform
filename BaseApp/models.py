@@ -20,7 +20,6 @@ class License(models.Model):
 
 
 class Genre(models.Model):
-
     name = models.CharField(max_length=25, blank=True)
 
     def __str__(self):
