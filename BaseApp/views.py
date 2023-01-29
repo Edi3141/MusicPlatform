@@ -1,5 +1,4 @@
 import os
-# from django.contrib.auth.models import User
 from django.http import FileResponse, Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -14,22 +13,18 @@ from rest_framework.viewsets import ModelViewSet
 
 
 class Search(ModelViewSet):
-    queryset = Genre.objects.all()
+    queryset = Track.objects.all()
     filter_backends = (SearchFilter,)
-    search_fields = ('name',)
+    search_fields = ('music_name',)
     serializer_class = serializers.SearchSerializer
 
 
 class GenreView(generics.ListAPIView):
-    """ Список жанров
-    """
     queryset = models.Genre.objects.all()
     serializer_class = serializers.GenreSerializer
 
 
 class LicenseView(viewsets.ModelViewSet):
-    """ CRUD лицензий автора
-    """
     serializer_class = serializers.LicenseSerializer
     permission_classes = [IsAuthor]
 
@@ -41,8 +36,6 @@ class LicenseView(viewsets.ModelViewSet):
 
 
 class AlbumView(viewsets.ModelViewSet):
-    """ CRUD альбомов автора
-    """
     parser_classes = (parsers.MultiPartParser,)
     serializer_class = serializers.AlbumSerializer
     permission_classes = [IsAuthor]
@@ -59,8 +52,6 @@ class AlbumView(viewsets.ModelViewSet):
 
 
 class PublicAlbumView(generics.ListAPIView):
-    """ Список публичных альбомов автора
-    """
     serializer_class = serializers.AlbumSerializer
 
     def get_queryset(self):
@@ -88,8 +79,6 @@ class TrackViewSet(viewsets.ModelViewSet):
 
 
 class PlayListView(MixedSerializer, viewsets.ModelViewSet):
-    """ CRUD плейлистов пользователя
-    """
     parser_classes = (parsers.MultiPartParser,)
     permission_classes = [IsAuthor]
     serializer_class = serializers.CreatePlayListSerializer
@@ -109,22 +98,18 @@ class PlayListView(MixedSerializer, viewsets.ModelViewSet):
 
 
 class TrackListView(generics.ListAPIView):
-    """ Список всех треков
-    """
     queryset = models.Track.objects.filter(album__private=False, private=False)
     serializer_class = serializers.AuthorTrackSerializer
     pagination_class = Pagination
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['title', 'album__name', 'genre__name']
+    filterset_fields = ['music_name', 'album', 'genre']
 
 
 class AuthorTrackListView(generics.ListAPIView):
-    """ Список всех треков автора
-    """
     serializer_class = serializers.AuthorTrackSerializer
     pagination_class = Pagination
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['title', 'album__name', 'genre__name']
+    filterset_fields = ['music_name', 'album', 'genre']
 
     def get_queryset(self):
         return models.Track.objects.filter(
@@ -133,8 +118,6 @@ class AuthorTrackListView(generics.ListAPIView):
 
 
 class CommentAuthorView(viewsets.ModelViewSet):
-    """ CRUD комментариев автора
-    """
     serializer_class = serializers.CommentAuthorSerializer
     permission_classes = [IsAuthor]
 
@@ -146,8 +129,6 @@ class CommentAuthorView(viewsets.ModelViewSet):
 
 
 class CommentView(viewsets.ModelViewSet):
-    """ Комментарии к треку
-    """
     serializer_class = serializers.CommentSerializer
 
     def get_queryset(self):
@@ -155,8 +136,6 @@ class CommentView(viewsets.ModelViewSet):
 
 
 class StreamingFileView(views.APIView):
-    """ Воспроизведение трека
-    """
 
     def set_play(self):
         self.track.plays_count += 1
@@ -174,8 +153,6 @@ class StreamingFileView(views.APIView):
 
 
 class DownloadTrackView(views.APIView):
-    """ Скачивание трека
-    """
 
     def set_download(self):
         self.track.download += 1
@@ -194,8 +171,7 @@ class DownloadTrackView(views.APIView):
 
 
 class StreamingFileAuthorView(views.APIView):
-    """ Воспроизведение трека автора
-    """
+
     permission_classes = [IsAuthor]
 
     def get(self, request, pk):

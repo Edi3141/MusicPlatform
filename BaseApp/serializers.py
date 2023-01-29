@@ -4,19 +4,23 @@ from .models import Track
 from .services import delete_old_file
 from Account.serializers import AuthorSerializer
 
+
 class TrackListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
-        fields = ('title', 'file', 'user')
+        fields = ('id',  'user', 'music_name', 'file')
+
 
 class TrackDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
         fields = '__all__'
+
     def to_representation(self, instance):
         rep = super().to_representation(instance)
         rep['genre'] = 'Test string'
         return rep
+
 
 class TrackSerializer(serializers.ModelSerializer):
     # user_email = serializers.ReadOnlyField(source='user.email')
@@ -24,8 +28,7 @@ class TrackSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Track
-        fields = ('title', 'file', 'license', 'genre', 'user')
-
+        fields = ('music_name', 'file', 'license', 'genre', 'user')
 
 
 class BaseSerializer(serializers.ModelSerializer):
@@ -35,7 +38,7 @@ class BaseSerializer(serializers.ModelSerializer):
 class GenreSerializer(BaseSerializer):
     class Meta:
         model = models.Genre
-        fields = ('id', 'name')
+        fields = ('name')
 
 
 class LicenseSerializer(BaseSerializer):
@@ -63,7 +66,7 @@ class CreateAuthorTrackSerializer(BaseSerializer):
         model = models.Track
         fields = (
             'id',
-            'title',
+            'music_name',
             'license',
             'genre',
             'album',
@@ -93,7 +96,7 @@ class AuthorTrackSerializer(CreateAuthorTrackSerializer):
 class CreatePlayListSerializer(BaseSerializer):
     class Meta:
         model = models.PlayList
-        fields = ('id', 'title', 'cover', 'tracks')
+        fields = ('id', 'music_name', 'cover', 'tracks')
 
     def update(self, instance, validated_data):
         delete_old_file(instance.cover.path)
@@ -105,17 +108,12 @@ class PlayListSerializer(CreatePlayListSerializer):
 
 
 class CommentAuthorSerializer(serializers.ModelSerializer):
-    """ Сериализация комментариев
-    """
-
     class Meta:
         model = models.Comment
         fields = ('id', 'text', 'track')
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    """ Сериализация комментариев
-    """
     user = AuthorSerializer()
 
     class Meta:
@@ -125,5 +123,5 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class SearchSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Genre
-        fields = ('name',)
+        model = models.Track
+        fields = ('music_name',)

@@ -39,7 +39,6 @@ class MyUserManager(BaseUserManager):
 
 
 class MyUser(AbstractUser):
-    """ Кастомный пользователь"""
     email = models.EmailField('email address', unique=True)
     password = models.CharField(max_length=100)
     activation_code = models.CharField(max_length=255, blank=True)

@@ -24,7 +24,7 @@ class AlbumAdmin(admin.ModelAdmin):
 
 @admin.register(models.Track)
 class TrackAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'title', 'create_at')
+    list_display = ('id', 'user', 'music_name', 'create_at')
     list_display_links = ('user',)
     list_filter = ('genre', 'create_at')
     search_fields = ('user__email', 'user__display_name', 'genre__name')
@@ -38,9 +38,9 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(models.PlayList)
 class PlayListAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'title')
+    list_display = ('id', 'user', 'music_name')
     list_display_links = ('user',)
-    search_fields = ('user__email', 'user__display_name', 'tracks__title')
+    search_fields = ('user__email', 'user__display_name', 'tracks__music_name')
 
 
 

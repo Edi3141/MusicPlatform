@@ -12,8 +12,6 @@ from Account.models import MyUser
 
 
 class License(models.Model):
-    """ Модель лицензий треков пользователя
-    """
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='licenses')
     text = models.TextField(max_length=1000)
 
@@ -22,17 +20,14 @@ class License(models.Model):
 
 
 class Genre(models.Model):
-    """ Модель жанров треков
-    """
-    name = models.CharField(max_length=25, unique=True)
+
+    name = models.CharField(max_length=25, blank=True)
 
     def __str__(self):
         return self.name
 
 
 class Album(models.Model):
-    """ Модель альбомов для треков
-    """
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='albums')
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=1000)
@@ -49,10 +44,8 @@ class Album(models.Model):
 
 
 class Track(models.Model):
-    """ Модель треков
-    """
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='tracks')
-    title = models.CharField(max_length=100)
+    music_name = models.CharField(max_length=100)
     license = models.ForeignKey(License, on_delete=models.PROTECT, related_name='license_tracks')
     genre = models.ManyToManyField(Genre, related_name='track_genres')
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, blank=True, null=True)
@@ -79,8 +72,6 @@ class Track(models.Model):
 
 
 class Comment(models.Model):
-    """ Модель комментариев к треку
-    """
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='comments')
     track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name='track_comments')
     text = models.TextField(max_length=1000)
@@ -91,10 +82,8 @@ class Comment(models.Model):
 
 
 class PlayList(models.Model):
-    """ Модель плейлистов пользователя
-    """
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='play_lists')
-    title = models.CharField(max_length=50)
+    music_name = models.CharField(max_length=50)
     tracks = models.ManyToManyField(Track, related_name='track_play_lists')
     cover = models.ImageField(
         upload_to=get_path_upload_cover_playlist,
@@ -104,4 +93,4 @@ class PlayList(models.Model):
     )
 
     def __str__(self):
-        return self.title
+        return self.music_name
