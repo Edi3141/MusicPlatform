@@ -14,7 +14,7 @@ class TrackListSerializer(serializers.ModelSerializer):
 class TrackDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
-        fields = '__all__'
+        fields = 'all'
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
@@ -38,7 +38,7 @@ class BaseSerializer(serializers.ModelSerializer):
 class GenreSerializer(BaseSerializer):
     class Meta:
         model = models.Genre
-        fields = ('name')
+        fields = ('id', 'name')
 
 
 class LicenseSerializer(BaseSerializer):

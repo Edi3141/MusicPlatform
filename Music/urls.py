@@ -1,6 +1,6 @@
 """Music URL Configuration
 
-The `urlpatterns` list routes URLs to views. For more information please see:
+The urlpatterns list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
 Examples:
 Function views
@@ -40,7 +40,7 @@ urlpatterns = [
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('admin/', admin.site.urls),
-    path('api/v1/audio/', include('BaseApp.urls')),
+    # path('api/v1/audio/', include('BaseApp.urls')),
     path('api/v1/account/', include('Account.urls')),
     path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]
